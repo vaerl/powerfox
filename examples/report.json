@@ -1,0 +1,474 @@
+{
+    "Consumption": {
+        "StartTime": 1681938900,
+        "StartTimeCurrency": 1681938900,
+        "Sum": 18.23999999999999,
+        "Max": 5.084,
+        "MaxCurrency": 1.5330611111111112,
+        "MeterReadings": [],
+        "ReportValues": [
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1682024400,
+                "Complete": true,
+                "Delta": 0.001,
+                "DeltaHT": 0,
+                "DeltaNT": 0,
+                "DeltaCurrency": 0.002115277777777778,
+                "ValuesType": 1
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1682020800,
+                "Complete": true,
+                "Delta": 1.5105,
+                "DeltaHT": 1.373,
+                "DeltaNT": 0.1285,
+                "DeltaCurrency": 0.46101111111111104,
+                "ValuesType": 1
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1682017200,
+                "Complete": true,
+                "Delta": 0.5075,
+                "DeltaHT": 0.224,
+                "DeltaNT": 0.3025,
+                "DeltaCurrency": 0.1606111111111111,
+                "ValuesType": 1
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1682013600,
+                "Complete": true,
+                "Delta": 0.738,
+                "DeltaHT": 0,
+                "DeltaNT": 0.694,
+                "DeltaCurrency": 0.2292611111111111,
+                "ValuesType": 1
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1682010000,
+                "Complete": true,
+                "Delta": 2.015,
+                "DeltaHT": 0,
+                "DeltaNT": 2.0010000000000003,
+                "DeltaCurrency": 0.612661111111111,
+                "ValuesType": 1
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1682006400,
+                "Complete": true,
+                "Delta": 2.237,
+                "DeltaHT": 0,
+                "DeltaNT": 1.987,
+                "DeltaCurrency": 0.703061111111111,
+                "ValuesType": 1
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1682002800,
+                "Complete": true,
+                "Delta": 1.144,
+                "DeltaHT": 0,
+                "DeltaNT": 0.9504999999999999,
+                "DeltaCurrency": 0.36936111111111114,
+                "ValuesType": 1
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681999200,
+                "Complete": true,
+                "Delta": 0.11699999999999999,
+                "DeltaHT": 16017.485,
+                "DeltaNT": 0.0005,
+                "DeltaCurrency": 0.05366111111111112,
+                "ValuesType": 1
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681995600,
+                "Complete": true,
+                "Delta": 0.027000000000000003,
+                "DeltaHT": 16017.485,
+                "DeltaNT": 0,
+                "DeltaCurrency": 0.017561111111111114,
+                "ValuesType": 1
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681992000,
+                "Complete": true,
+                "Delta": 0.01,
+                "DeltaHT": 0,
+                "DeltaNT": 0.001,
+                "DeltaCurrency": 0.010861111111111111,
+                "ValuesType": 1
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681988400,
+                "Complete": true,
+                "Delta": 0.01,
+                "DeltaHT": 0,
+                "DeltaNT": 0,
+                "DeltaCurrency": 0.01086111111111111,
+                "ValuesType": 1
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681984800,
+                "Complete": true,
+                "Delta": 0.011,
+                "DeltaHT": 0,
+                "DeltaNT": 0.001,
+                "DeltaCurrency": 0.01116111111111111,
+                "ValuesType": 1
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681981200,
+                "Complete": true,
+                "Delta": 0.01,
+                "DeltaHT": 0,
+                "DeltaNT": 0,
+                "DeltaCurrency": 0.01086111111111111,
+                "ValuesType": 1
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681977600,
+                "Complete": true,
+                "Delta": 0.011,
+                "DeltaHT": 16017.483,
+                "DeltaNT": 0.0005,
+                "DeltaCurrency": 0.01116111111111111,
+                "ValuesType": 1
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681974000,
+                "Complete": true,
+                "Delta": 0.009000000000000001,
+                "DeltaHT": 16017.482,
+                "DeltaNT": 0.0005,
+                "DeltaCurrency": 0.01046111111111111,
+                "ValuesType": 1
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681970400,
+                "Complete": true,
+                "Delta": 0.541,
+                "DeltaHT": 0,
+                "DeltaNT": 0.531,
+                "DeltaCurrency": 0.1701611111111111,
+                "ValuesType": 1
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681966800,
+                "Complete": true,
+                "Delta": 1.7060000000000002,
+                "DeltaHT": 0,
+                "DeltaNT": 1.6960000000000002,
+                "DeltaCurrency": 0.5196611111111111,
+                "ValuesType": 1
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681963200,
+                "Complete": true,
+                "Delta": 5.084,
+                "DeltaHT": 0.246,
+                "DeltaNT": 4.893000000000001,
+                "DeltaCurrency": 1.5330611111111112,
+                "ValuesType": 1
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681959600,
+                "Complete": true,
+                "Delta": 1.97,
+                "DeltaHT": 1.8900000000000001,
+                "DeltaNT": 0,
+                "DeltaCurrency": 0.5993611111111111,
+                "ValuesType": 1
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681956000,
+                "Complete": true,
+                "Delta": 0.016,
+                "DeltaHT": 0,
+                "DeltaNT": 0,
+                "DeltaCurrency": 0.013161111111111111,
+                "ValuesType": 1
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681952400,
+                "Complete": true,
+                "Delta": 0.016,
+                "DeltaHT": 0.001,
+                "DeltaNT": 0,
+                "DeltaCurrency": 0.013261111111111112,
+                "ValuesType": 1
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681948800,
+                "Complete": true,
+                "Delta": 0.015,
+                "DeltaHT": 0,
+                "DeltaNT": 0,
+                "DeltaCurrency": 0.012861111111111111,
+                "ValuesType": 1
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681945200,
+                "Complete": true,
+                "Delta": 0.009000000000000001,
+                "DeltaHT": 0,
+                "DeltaNT": 0,
+                "DeltaCurrency": 0.01046111111111111,
+                "ValuesType": 1
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681941600,
+                "Complete": true,
+                "Delta": 0.011,
+                "DeltaHT": 16010.362,
+                "DeltaNT": 0,
+                "DeltaCurrency": 0.011161111111111111,
+                "ValuesType": 1
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681938000,
+                "Complete": true,
+                "Delta": 0.514,
+                "DeltaHT": 0.508,
+                "DeltaNT": 0,
+                "DeltaCurrency": 0.16004583333333333,
+                "ValuesType": 1
+            }
+        ],
+        "SumCurrency": 5.717866666666667
+    },
+    "FeedIn": {
+        "StartTime": 1681938900,
+        "StartTimeCurrency": 9223372036854775807,
+        "Sum": 16015.209,
+        "Max": 16015.209,
+        "MaxCurrency": 0,
+        "MeterReadings": [],
+        "ReportValues": [
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1682024400,
+                "Complete": true,
+                "Delta": 0,
+                "DeltaCurrency": 0,
+                "ValuesType": 2
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1682020800,
+                "Complete": true,
+                "Delta": 0,
+                "DeltaCurrency": 0,
+                "ValuesType": 2
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1682017200,
+                "Complete": true,
+                "Delta": 0,
+                "DeltaCurrency": 0,
+                "ValuesType": 2
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1682013600,
+                "Complete": true,
+                "Delta": 0,
+                "DeltaCurrency": 0,
+                "ValuesType": 2
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1682010000,
+                "Complete": true,
+                "Delta": 0,
+                "DeltaCurrency": 0,
+                "ValuesType": 2
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1682006400,
+                "Complete": true,
+                "Delta": 0,
+                "DeltaCurrency": 0,
+                "ValuesType": 2
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1682002800,
+                "Complete": true,
+                "Delta": 0,
+                "DeltaCurrency": 0,
+                "ValuesType": 2
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681999200,
+                "Complete": true,
+                "Delta": 0,
+                "DeltaCurrency": 0,
+                "ValuesType": 2
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681995600,
+                "Complete": true,
+                "Delta": 0,
+                "DeltaCurrency": 0,
+                "ValuesType": 2
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681992000,
+                "Complete": true,
+                "Delta": 0,
+                "DeltaCurrency": 0,
+                "ValuesType": 2
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681988400,
+                "Complete": true,
+                "Delta": 0,
+                "DeltaCurrency": 0,
+                "ValuesType": 2
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681984800,
+                "Complete": true,
+                "Delta": 0,
+                "DeltaCurrency": 0,
+                "ValuesType": 2
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681981200,
+                "Complete": true,
+                "Delta": 0,
+                "DeltaCurrency": 0,
+                "ValuesType": 2
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681977600,
+                "Complete": true,
+                "Delta": 0,
+                "DeltaCurrency": 0,
+                "ValuesType": 2
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681974000,
+                "Complete": true,
+                "Delta": 16015.209,
+                "DeltaCurrency": 0,
+                "ValuesType": 2
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681970400,
+                "Complete": true,
+                "Delta": 0,
+                "DeltaCurrency": 0,
+                "ValuesType": 2
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681966800,
+                "Complete": true,
+                "Delta": 0,
+                "DeltaCurrency": 0,
+                "ValuesType": 2
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681963200,
+                "Complete": true,
+                "Delta": 0,
+                "DeltaCurrency": 0,
+                "ValuesType": 2
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681959600,
+                "Complete": true,
+                "Delta": 0,
+                "DeltaCurrency": 0,
+                "ValuesType": 2
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681956000,
+                "Complete": true,
+                "Delta": 0,
+                "DeltaCurrency": 0,
+                "ValuesType": 2
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681952400,
+                "Complete": true,
+                "Delta": 0,
+                "DeltaCurrency": 0,
+                "ValuesType": 2
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681948800,
+                "Complete": true,
+                "Delta": 0,
+                "DeltaCurrency": 0,
+                "ValuesType": 2
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681945200,
+                "Complete": true,
+                "Delta": 0,
+                "DeltaCurrency": 0,
+                "ValuesType": 2
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681941600,
+                "Complete": true,
+                "Delta": 0,
+                "DeltaCurrency": 0,
+                "ValuesType": 2
+            },
+            {
+                "DeviceId": "9c9c1f1369e8",
+                "Timestamp": 1681938000,
+                "Complete": true,
+                "Delta": 0,
+                "DeltaCurrency": 0,
+                "ValuesType": 2
+            }
+        ],
+        "SumCurrency": 0
+    }
+}
