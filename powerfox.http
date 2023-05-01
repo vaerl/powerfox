@@ -1,0 +1,16 @@
+# Heizstrom
+# @DEVICE_ID = 9c9c1f1369e8
+# Allgemeinstromg
+@DEVICE_ID = 9c9c1f149a90 
+
+### get devices
+GET {{$dotenv POWERFOX_BASE_URL}}/api/2.0/my/all/devices
+Authorization: Basic {{$dotenv POWERFOX_USERNAME}}:{{$dotenv POWERFOX_PASSWORD}}
+
+### get reports
+GET {{$dotenv POWERFOX_BASE_URL}}/api/2.0/my/all/report
+Authorization: Basic {{$dotenv POWERFOX_USERNAME}}:{{$dotenv POWERFOX_PASSWORD}}
+
+### get report for device
+GET {{$dotenv POWERFOX_BASE_URL}}/api/2.0/my/{{DEVICE_ID}}/report
+Authorization: Basic {{$dotenv POWERFOX_USERNAME}}:{{$dotenv POWERFOX_PASSWORD}}
