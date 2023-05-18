@@ -59,6 +59,18 @@ pub struct TemperatureData {
     hourly: Hourly,
 }
 
+impl TemperatureData {
+    /// Calculate the average temperature.
+    fn average_temperature(&self) -> Option<f32> {
+        self.hourly
+            .temperature_2m
+            .iter()
+            // NOTE I don't know whether we should copy here
+            .copied()
+            .reduce(|a, b| a + b)
+    }
+}
+
 #[derive(Serialize, Deserialize, Debug)]
 pub struct HourlyUnit {
     time: String,
