@@ -1,9 +1,9 @@
 use std::env;
 
-use anyhow::Result;
+use anyhow::{anyhow, Result};
 use chrono::serde::ts_seconds::deserialize as from_ts;
 use chrono::{Datelike, NaiveDate, Utc};
-use reqwest::Client;
+use reqwest::{Client, StatusCode};
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 
@@ -36,9 +36,14 @@ impl Powerfox {
             .basic_auth(&self.username, Some(&self.password))
             .send()
             .await?;
-        // NOTE type-inference had some hiccups when using the method's return-type, so we just use a typ-annotated variable
-        let devices: Vec<Device> = response.json().await?;
-        Ok(devices)
+        if response.status() != StatusCode::OK {
+            Err(anyhow!(
+                "Status-Code of response was not OK: {}",
+                response.text().await?
+            ))
+        } else {
+            Ok(response.json().await?)
+        }
     }
 
     /// Get the values of all devices for the last 24 hours.
@@ -49,8 +54,14 @@ impl Powerfox {
             .basic_auth(&self.username, Some(&self.password))
             .send()
             .await?;
-        let report: Report = response.json().await?;
-        Ok(report)
+        if response.status() != StatusCode::OK {
+            Err(anyhow!(
+                "Status-Code of response was not OK: {}",
+                response.text().await?
+            ))
+        } else {
+            Ok(response.json().await?)
+        }
     }
 
     /// Get the values of the specified device for the last 24 hours.
@@ -64,8 +75,14 @@ impl Powerfox {
             .basic_auth(&self.username, Some(&self.password))
             .send()
             .await?;
-        let report: Report = response.json().await?;
-        Ok(report)
+        if response.status() != StatusCode::OK {
+            Err(anyhow!(
+                "Status-Code of response was not OK: {}",
+                response.text().await?
+            ))
+        } else {
+            Ok(response.json().await?)
+        }
     }
 
     /// Get the values of the specified device for the specified day (00:00  to 23:59).
@@ -83,8 +100,15 @@ impl Powerfox {
             .basic_auth(&self.username, Some(&self.password))
             .send()
             .await?;
-        let report: Report = response.json().await?;
-        Ok(report)
+
+        if response.status() != StatusCode::OK {
+            Err(anyhow!(
+                "Status-Code of response was not OK: {}",
+                response.text().await?
+            ))
+        } else {
+            Ok(response.json().await?)
+        }
     }
 }
 

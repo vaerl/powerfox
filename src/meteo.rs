@@ -1,7 +1,7 @@
 use crate::util::deserialize_datetime;
-use anyhow::Result;
+use anyhow::{anyhow, Result};
 use chrono::NaiveDateTime;
-use reqwest::Client;
+use reqwest::{Client, StatusCode};
 use serde::{Deserialize, Serialize};
 use std::env;
 pub struct Meteo {
@@ -34,10 +34,14 @@ impl Meteo {
             ))
             .send()
             .await?;
-        // println!("{}", response.text().await?);
-        let data: TemperatureData = response.json().await?;
-        Ok(data)
-        // todo!()
+        if response.status() != StatusCode::OK {
+            Err(anyhow!(
+                "Status-Code of response was not OK: {}",
+                response.text().await?
+            ))
+        } else {
+            Ok(response.json().await?)
+        }
     }
 }
 
