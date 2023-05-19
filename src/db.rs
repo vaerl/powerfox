@@ -1,6 +1,6 @@
 use crate::powerfox::Report;
 use anyhow::{anyhow, Result};
-use chrono::{Datelike, Local, NaiveDate};
+use chrono::{Datelike, Local, NaiveDate, Duration};
 use serenity::utils::MessageBuilder;
 use sqlx::{
     postgres::{PgConnectOptions, PgPoolOptions},
@@ -108,12 +108,12 @@ impl Days {
 }
 
 impl CreateDay {
-    pub fn new(heating_report: Report, general_report: Report, average_temperature: f64) -> Self {
+    pub fn yesterday(heating_report: Report, general_report: Report, average_temperature: f64) -> Self {
         CreateDay {
             heating_consumption: heating_report.consumption.sum,
             general_consumption: general_report.consumption.sum,
             average_temperature,
-            date: Local::now().date_naive(),
+            date: Local::now().date_naive() - Duration::days(1),
         }
     }
 }

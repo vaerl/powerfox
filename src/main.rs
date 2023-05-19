@@ -75,7 +75,7 @@ async fn get_and_write_data(db: &Db) -> Result<Day> {
         }
 
         if heating_report.is_some() && general_report.is_some() {
-            let day = CreateDay::new(
+            let day = CreateDay::yesterday(
                 // we can just unwrap here because we check with is_some() before
                 heating_report.unwrap(),
                 general_report.unwrap(),
