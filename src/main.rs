@@ -1,6 +1,6 @@
 use crate::powerfox::Powerfox;
 use anyhow::{anyhow, Result};
-use db::{Day, Db};
+use db::{CreateDay, Day, Db};
 use discord::Discord;
 use dotenv::dotenv;
 use meteo::Meteo;
@@ -38,6 +38,9 @@ async fn get_wrapper() -> Result<()> {
         Ok(day) => {
             let config = db.get_config().await?;
             discord.say(day.summary(&config.cost_heating)).await?;
+
+            let days = db.get_days_of_month().await?;
+            discord.say(days.summary(&config)?).await?
         }
         Err(err) => {
             discord
@@ -49,7 +52,6 @@ async fn get_wrapper() -> Result<()> {
 }
 
 async fn get_and_write_data(db: &Db) -> Result<Day> {
-    // TODO maybe pass the clients here to avoid recreating? -> may depend on how serenity does its commands
     // if we have the data already, just return it to save on API-calls
     if let Ok(day) = db.get_today().await {
         return Ok(day);
@@ -77,7 +79,7 @@ async fn get_and_write_data(db: &Db) -> Result<Day> {
         }
 
         if heating_report.is_some() && general_report.is_some() {
-            let day = Day::new(
+            let day = CreateDay::new(
                 // we can just unwrap here because we check with is_some() before
                 heating_report.unwrap(),
                 general_report.unwrap(),
