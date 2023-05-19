@@ -2,7 +2,7 @@ use std::env;
 
 use anyhow::{anyhow, Result};
 use chrono::serde::ts_seconds::deserialize as from_ts;
-use chrono::{Datelike, NaiveDate, Utc};
+use chrono::{Datelike, Duration, Local, NaiveDate, Utc};
 use reqwest::{Client, StatusCode};
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
@@ -65,12 +65,17 @@ impl Powerfox {
     }
 
     /// Get the values of the specified device for the last 24 hours.
-    pub async fn get_report_for(&self, device_id: &String) -> Result<Report> {
+    pub async fn get_report_for_yesterday(&self, device_id: &String) -> Result<Report> {
+        let yesterday = Local::now().date_naive() - Duration::days(1);
         let response = self
             .client
             .get(format!(
-                "{}/api/2.0/my/{}/report",
-                &self.base_url, device_id
+                "{}/api/2.0/my/{}/report?year={}&month={}&day={}",
+                &self.base_url,
+                device_id,
+                yesterday.year(),
+                yesterday.month(),
+                yesterday.day()
             ))
             .basic_auth(&self.username, Some(&self.password))
             .send()

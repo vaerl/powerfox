@@ -17,11 +17,7 @@ async fn main() -> Result<()> {
 
     get_wrapper().await?;
 
-    // TODO what then?
-    // -> calculate costs for the given consumption
-    // -> commit this to some document or something, possibly just push to some git-repo
-    // -> send a message to somewhere, possibly Discord: https://github.com/serenity-rs/serenity
-    // => heating in kWh and cost, general in kWh and cost, (remaining) monthly budget
+    // TODO what now?
     // -> analyze data (use history from git-repo or whatever): send warnings depending on consumption, price and temperature
     // => recognize trends, f.e. if consumption starts getting higher; temperature is higher than $THRESHOLD, but there still was significant consumption (f.e. more than 20kWh)
     // -> make variables configurable by Discord-commands or mail -> thresholds, costs, etc.
@@ -33,7 +29,7 @@ async fn get_wrapper() -> Result<()> {
     let discord = Discord::new().await?;
     let db = Db::new().await?;
 
-    discord.say(format!("Getting today's data.")).await?;
+    discord.say(format!("Getting yesterday's data.")).await?;
     match get_and_write_data(&db).await {
         Ok(day) => {
             let config = db.get_config().await?;
@@ -58,7 +54,7 @@ async fn get_and_write_data(db: &Db) -> Result<Day> {
     }
 
     let meteo = Meteo::new()?;
-    let temperature = meteo.get_temperature_for_today().await?;
+    let temperature = meteo.get_temperature_for_yesterday().await?;
 
     let powerfox = Powerfox::new()?;
     let devices = powerfox.get_devices().await?;
@@ -71,11 +67,11 @@ async fn get_and_write_data(db: &Db) -> Result<Day> {
     let mut general_report = None;
     for device in devices {
         if device.name == "Heizstrom" {
-            heating_report = Some(powerfox.get_report_for(&device.device_id).await?);
+            heating_report = Some(powerfox.get_report_for_yesterday(&device.device_id).await?);
         }
 
         if device.name == "Allgemeinstrom" {
-            general_report = Some(powerfox.get_report_for(&device.device_id).await?);
+            general_report = Some(powerfox.get_report_for_yesterday(&device.device_id).await?);
         }
 
         if heating_report.is_some() && general_report.is_some() {
