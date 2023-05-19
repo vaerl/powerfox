@@ -147,8 +147,8 @@ impl Db {
     }
 
     /// Updates the event if it exists, otherwise just adds it to the database.
-    pub async fn save_day(&self, day: CreateDay) -> Result<Day> {
-        match self.get_today().await {
+    pub async fn save_yesterday(&self, day: CreateDay) -> Result<Day> {
+        match self.get_yesterday().await {
             Ok(existing_day) => {
                 // we already have a day, no need to create another
                 self.update_day(existing_day.id, day).await
@@ -178,8 +178,9 @@ impl Db {
     }
 
     /// Wrapper around [get_day](Db::get_day).
-    pub async fn get_today(&self) -> Result<Day> {
-        self.get_day(Local::now().date_naive()).await
+    pub async fn get_yesterday(&self) -> Result<Day> {
+        let yesterday = Local::now().date_naive() - Duration::days(1);
+        self.get_day(yesterday).await
     }
 
     /// Get all the days from the database.
