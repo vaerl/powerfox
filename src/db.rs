@@ -9,7 +9,7 @@ use sqlx::{
 use std::env;
 
 #[derive(sqlx::FromRow)]
-struct Config {
+pub struct Config {
     id: Uuid,
     pub cost_heating: f64,
     pub cost_general: f64,
@@ -17,10 +17,24 @@ struct Config {
     pub monthly_budget_general: f64,
 }
 
+pub struct CreateConfig {
+    cost_heating: f64,
+    cost_general: f64,
+    monthly_budget_heating: f64,
+    monthly_budget_general: f64,
+}
+
 #[derive(sqlx::FromRow, Debug)]
 pub struct Day {
     id: Uuid,
     // TODO maybe have time-series here at some point and calculate average_temperature and such?
+    pub heating_consumption: f64,
+    pub general_consumption: f64,
+    pub average_temperature: f64,
+    pub date: NaiveDate,
+}
+
+pub struct CreateDay {
     pub heating_consumption: f64,
     pub general_consumption: f64,
     pub average_temperature: f64,
@@ -40,6 +54,8 @@ impl Day {
 }
 
 struct Db {
+
+pub struct Db {
     username: String,
     password: String,
     host: String,
