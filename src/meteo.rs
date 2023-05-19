@@ -47,14 +47,14 @@ impl Meteo {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct TemperatureData {
-    latitude: f32,
-    longitude: f32,
-    generationtime_ms: f32,
+    latitude: f64,
+    longitude: f64,
+    generationtime_ms: f64,
     // offset could be negative, maybe
     utc_offset_seconds: i32,
     timezone: String,
     timezone_abbreviation: String,
-    elevation: f32,
+    elevation: f64,
     hourly_units: HourlyUnit,
     hourly: Hourly,
 }
@@ -83,5 +83,5 @@ pub struct Hourly {
     time: Vec<NaiveDateTime>,
 
     /// The temperature two meters above ground.
-    temperature_2m: Vec<f32>,
+    temperature_2m: Vec<f64>,
 }
