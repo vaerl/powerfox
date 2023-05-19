@@ -61,13 +61,21 @@ pub struct TemperatureData {
 
 impl TemperatureData {
     /// Calculate the average temperature.
-    fn average_temperature(&self) -> Option<f32> {
-        self.hourly
+    pub fn average_temperature(&self) -> Result<f64> {
+        match self
+            .hourly
             .temperature_2m
             .iter()
             // NOTE I don't know whether we should copy here
             .copied()
             .reduce(|a, b| a + b)
+        {
+            Some(sum) => Ok(sum / self.hourly.temperature_2m.len() as f64),
+            None => Err(anyhow!(
+                "Could not reduce data: {:#?}",
+                self.hourly.temperature_2m
+            )),
+        }
     }
 }
 
