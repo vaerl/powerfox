@@ -1,3 +1,6 @@
+# make sure sqlx uses offline-data
+ENV SQLX_OFFLINE=true
+
 # Use a base image with the latest version of Rust installed
 FROM rust:latest
 
