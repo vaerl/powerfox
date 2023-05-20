@@ -1,3 +1,367 @@
 {
-  "db": "PostgreSQL"
+  "db": "PostgreSQL",
+  "06812bbe121af1abfdccb017dfa77803530f033db4b93bde4cadf96946c83c6c": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Uuid"
+        },
+        {
+          "name": "heating_consumption",
+          "ordinal": 1,
+          "type_info": "Float8"
+        },
+        {
+          "name": "general_consumption",
+          "ordinal": 2,
+          "type_info": "Float8"
+        },
+        {
+          "name": "average_temperature",
+          "ordinal": 3,
+          "type_info": "Float8"
+        },
+        {
+          "name": "date",
+          "ordinal": 4,
+          "type_info": "Date"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Float8",
+          "Float8",
+          "Float8",
+          "Date",
+          "Uuid"
+        ]
+      }
+    },
+    "query": "UPDATE days SET (heating_consumption, general_consumption, average_temperature, date) = ($1, $2, $3, $4) WHERE id = $5 RETURNING id, heating_consumption, general_consumption, average_temperature, date"
+  },
+  "0b6bf4afa49cb5cb4602b87b93564fb51da0efe127e557c119c96ff239aabb2f": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Uuid"
+        },
+        {
+          "name": "heating_consumption",
+          "ordinal": 1,
+          "type_info": "Float8"
+        },
+        {
+          "name": "general_consumption",
+          "ordinal": 2,
+          "type_info": "Float8"
+        },
+        {
+          "name": "average_temperature",
+          "ordinal": 3,
+          "type_info": "Float8"
+        },
+        {
+          "name": "date",
+          "ordinal": 4,
+          "type_info": "Date"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid",
+          "Float8",
+          "Float8",
+          "Float8",
+          "Date"
+        ]
+      }
+    },
+    "query": "INSERT INTO days (id, heating_consumption, general_consumption, average_temperature, date) VALUES ($1, $2, $3, $4, $5) RETURNING id, heating_consumption, general_consumption, average_temperature, date"
+  },
+  "3cfaa48b7d7ffe09305f6a2ccb49737674dc08eb2d72f9006ca3c4c0bd4bd7f3": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Uuid"
+        },
+        {
+          "name": "heating_consumption",
+          "ordinal": 1,
+          "type_info": "Float8"
+        },
+        {
+          "name": "general_consumption",
+          "ordinal": 2,
+          "type_info": "Float8"
+        },
+        {
+          "name": "average_temperature",
+          "ordinal": 3,
+          "type_info": "Float8"
+        },
+        {
+          "name": "date",
+          "ordinal": 4,
+          "type_info": "Date"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "parameters": {
+        "Left": []
+      }
+    },
+    "query": "SELECT * FROM days"
+  },
+  "46134046efc1623e389a7dfe8ee0042c713368eff27c6608f3d162864d6a995c": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Uuid"
+        },
+        {
+          "name": "heating_consumption",
+          "ordinal": 1,
+          "type_info": "Float8"
+        },
+        {
+          "name": "general_consumption",
+          "ordinal": 2,
+          "type_info": "Float8"
+        },
+        {
+          "name": "average_temperature",
+          "ordinal": 3,
+          "type_info": "Float8"
+        },
+        {
+          "name": "date",
+          "ordinal": 4,
+          "type_info": "Date"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Date"
+        ]
+      }
+    },
+    "query": "SELECT * FROM days WHERE date > $1"
+  },
+  "922dda0d16b61a25068183d3b7c7892ad15d72e175433a4e35cab33d0263acfb": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Uuid"
+        },
+        {
+          "name": "cost_heating",
+          "ordinal": 1,
+          "type_info": "Float8"
+        },
+        {
+          "name": "cost_general",
+          "ordinal": 2,
+          "type_info": "Float8"
+        },
+        {
+          "name": "monthly_budget_heating",
+          "ordinal": 3,
+          "type_info": "Float8"
+        },
+        {
+          "name": "monthly_budget_general",
+          "ordinal": 4,
+          "type_info": "Float8"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "parameters": {
+        "Left": []
+      }
+    },
+    "query": "SELECT * FROM config"
+  },
+  "93636c5d7f9d88fa262a17e56a22654fb6422bdd37f4689fa34e2e667488a79c": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Uuid"
+        },
+        {
+          "name": "cost_heating",
+          "ordinal": 1,
+          "type_info": "Float8"
+        },
+        {
+          "name": "cost_general",
+          "ordinal": 2,
+          "type_info": "Float8"
+        },
+        {
+          "name": "monthly_budget_heating",
+          "ordinal": 3,
+          "type_info": "Float8"
+        },
+        {
+          "name": "monthly_budget_general",
+          "ordinal": 4,
+          "type_info": "Float8"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Float8",
+          "Float8",
+          "Float8",
+          "Float8",
+          "Uuid"
+        ]
+      }
+    },
+    "query": "UPDATE config SET (cost_heating, cost_general, monthly_budget_heating, monthly_budget_general) = ($1, $2, $3, $4) WHERE id = $5 RETURNING id, cost_heating, cost_general, monthly_budget_heating, monthly_budget_general"
+  },
+  "9740c4b073559d95700d5cc65874c462600c6a59b28f7f3b1a72ec1b257fdf30": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Uuid"
+        },
+        {
+          "name": "cost_heating",
+          "ordinal": 1,
+          "type_info": "Float8"
+        },
+        {
+          "name": "cost_general",
+          "ordinal": 2,
+          "type_info": "Float8"
+        },
+        {
+          "name": "monthly_budget_heating",
+          "ordinal": 3,
+          "type_info": "Float8"
+        },
+        {
+          "name": "monthly_budget_general",
+          "ordinal": 4,
+          "type_info": "Float8"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid",
+          "Float8",
+          "Float8",
+          "Float8",
+          "Float8"
+        ]
+      }
+    },
+    "query": "INSERT INTO config (id, cost_heating, cost_general, monthly_budget_heating, monthly_budget_general) VALUES ($1, $2, $3, $4, $5) RETURNING id, cost_heating, cost_general, monthly_budget_heating, monthly_budget_general"
+  },
+  "a1dfc9dc1294f8440e4f4d2f97fa9d91ba01638a5d427b480740d9b7ad67f0a1": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Uuid"
+        },
+        {
+          "name": "heating_consumption",
+          "ordinal": 1,
+          "type_info": "Float8"
+        },
+        {
+          "name": "general_consumption",
+          "ordinal": 2,
+          "type_info": "Float8"
+        },
+        {
+          "name": "average_temperature",
+          "ordinal": 3,
+          "type_info": "Float8"
+        },
+        {
+          "name": "date",
+          "ordinal": 4,
+          "type_info": "Date"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Date"
+        ]
+      }
+    },
+    "query": "SELECT * FROM days WHERE date = $1"
+  }
 }

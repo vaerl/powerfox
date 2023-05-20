@@ -13,7 +13,7 @@ reqwest = { version = "0.11", features = ["json"] }
 tokio = { version = "1", features = ["full"] }
 serde_repr = "0.1"
 chrono = { version = "0.4", features = ["serde"] }
-sqlx = {version = "0.7.0-alpha.3", features = ["chrono", "postgres", "runtime-tokio", "uuid"]}
+sqlx = {version = "0.6", features = ["chrono", "postgres", "uuid", "offline", "runtime-tokio-rustls"]}
 axum = "0.6.18"
 
 [dependencies.uuid]
