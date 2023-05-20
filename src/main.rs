@@ -23,7 +23,7 @@ async fn main() -> Result<()> {
     dotenv().ok();
     let port: u16 = env::var("APP_PORT")?.parse()?;
 
-    let app = Router::new().route("/powerfox", get(get_wrapper));
+    let app = Router::new().route("/powerfox/daily", get(powerfox_daily));
     let addr = SocketAddr::from(([127, 0, 0, 1], port));
     axum::Server::bind(&addr)
         .serve(app.into_make_service())
@@ -38,7 +38,7 @@ async fn main() -> Result<()> {
     Ok(())
 }
 
-async fn get_wrapper() -> Result<(), AppError> {
+async fn powerfox_daily() -> Result<(), AppError> {
     let discord = Discord::new().await?;
     let db = Db::new().await?;
 
