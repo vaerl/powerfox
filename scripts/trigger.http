@@ -1,0 +1,7 @@
+@PORT=3000
+@BASE=http://localhost
+
+@GOJO=http://gojo.local
+
+### trigger getting the data
+GET {{BASE}}:{{PORT}}/powerfox/daily
