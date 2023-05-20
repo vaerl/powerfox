@@ -15,4 +15,4 @@ COPY . .
 RUN cargo build --release
 
 # Specify the command to run when the container starts
-CMD ["./target/release/my-rust-app"]
+CMD ["./target/release/powerfox"]
