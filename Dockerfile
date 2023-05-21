@@ -1,18 +1,17 @@
-
-# Use a base image with the latest version of Rust installed
-FROM rust:latest
-
-# make sure sqlx uses offline-data
+FROM rust:latest as build
+ENV PKG_CONFIG_ALLOW_CROSS=1
 ENV SQLX_OFFLINE=true
 
-# Set the working directory in the container
-WORKDIR /app
+WORKDIR /usr/src/powerfox
 
-# Copy the local application code into the container
+RUN apt-get update
+
 COPY . .
 
-# Build the Rust application
-RUN cargo build --release
+RUN cargo install --path .
 
-# Specify the command to run when the container starts
-CMD ["./target/release/powerfox"]
+FROM gcr.io/distroless/cc-debian10
+
+COPY --from=build /usr/local/cargo/bin/powerfox /usr/local/bin/powerfox
+
+CMD ["powerfox"]
