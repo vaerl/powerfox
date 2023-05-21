@@ -27,7 +27,7 @@ FROM debian:buster-slim
 COPY --from=builder /usr/src/powerfox/target/release/powerfox /usr/local/bin/powerfox
 
 # Install system dependencies (if required by your application)
-RUN apt-get update && apt-get install -y pkg-config libssl-dev
+RUN apt-get update && apt-get install -y pkg-config libssl-dev neovim
 
 EXPOSE 3000
 
