@@ -1,6 +1,7 @@
 # Use the official Rust image as the base image
 FROM rust:latest as builder
 ENV SQLX_OFFLINE=true
+ENV PKG_CONFIG_ALLOW_CROSS=1
 
 # Create a new directory for the application code
 WORKDIR /usr/src/powerfox
