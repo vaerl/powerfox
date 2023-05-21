@@ -14,4 +14,5 @@ FROM gcr.io/distroless/cc-debian10
 
 COPY --from=build /usr/local/cargo/bin/powerfox /usr/local/bin/powerfox
 
+EXPOSE 3000
 CMD ["powerfox"]
