@@ -1,5 +1,6 @@
 # Use the official Rust image as the base image
 FROM rust:latest as builder
+ENV SQLX_OFFLINE=true
 
 # Create a new directory for the application code
 WORKDIR /usr/src/powerfox
@@ -14,7 +15,7 @@ RUN mkdir src && \
 
 # Copy the application source code to the container
 COPY src ./src
-COPY .env ./.env
+COPY .env sqlx-data.json ./
 
 # Build the release version of the application
 RUN cargo build --release
