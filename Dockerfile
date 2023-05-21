@@ -28,4 +28,4 @@ COPY --from=builder /usr/src/powerfox/target/release/powerfox /usr/local/bin/pow
 EXPOSE 3000
 
 # Set the entrypoint command for the container
-CMD ["powerfox"]
+CMD ["sh"]
