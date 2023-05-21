@@ -8,6 +8,7 @@ use axum::{
 use db::{CreateDay, Day, Db};
 use discord::Discord;
 use dotenv::dotenv;
+use log::{debug, error, info};
 use meteo::Meteo;
 use reqwest::StatusCode;
 use std::{env, net::SocketAddr};
@@ -20,11 +21,11 @@ mod util;
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    println!("Starting");
+    info!("Starting server.");
     dotenv().ok();
-    println!("Found dotenv");
+
     let port: u16 = env::var("APP_PORT")?.parse()?;
-    println!("Got port");
+    debug!("dot-env is okay.");
 
     let app = Router::new().route("/powerfox/daily", get(powerfox_daily));
     let addr = SocketAddr::from(([127, 0, 0, 1], port));
@@ -43,6 +44,7 @@ async fn main() -> Result<()> {
 }
 
 async fn powerfox_daily() -> Result<(), AppError> {
+    info!("Getting yesterday's data.");
     let discord = Discord::new().await?;
     let db = Db::new().await?;
 
@@ -53,12 +55,13 @@ async fn powerfox_daily() -> Result<(), AppError> {
             discord.say(day.summary(&config.cost_heating)).await?;
 
             let days = db.get_days_of_month().await?;
-            discord.say(days.summary(&config)?).await?
+            discord.say(days.summary(&config)?).await?;
+            info!("Done with daily data and summary.")
         }
         Err(err) => {
-            discord
-                .say(format!("Encountered an error: {}", err))
-                .await?
+            let error = format!("Encountered an error: {}", err);
+            error!("{}", error);
+            discord.say(error).await?
         }
     }
     Ok(())
@@ -102,6 +105,7 @@ async fn get_and_write_data(db: &Db) -> Result<Day> {
             return db.save_yesterday(yesterday).await;
         }
     }
+
     Err(anyhow!(
         "Could not get all necessary data for the current day."
     ))
