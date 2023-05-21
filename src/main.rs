@@ -20,11 +20,15 @@ mod util;
 
 #[tokio::main]
 async fn main() -> Result<()> {
+    println!("Starting");
     dotenv().ok();
+    println!("Found dotenv");
     let port: u16 = env::var("APP_PORT")?.parse()?;
+    println!("Got port");
 
     let app = Router::new().route("/powerfox/daily", get(powerfox_daily));
     let addr = SocketAddr::from(([127, 0, 0, 1], port));
+    println!("Starting app.");
     axum::Server::bind(&addr)
         .serve(app.into_make_service())
         .await?;

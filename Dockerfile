@@ -31,4 +31,4 @@ RUN apt-get update && apt-get install -y pkg-config libssl-dev
 EXPOSE 3000
 
 # Set the entrypoint command for the container
-CMD ["sh"]
+CMD ["bash"]
