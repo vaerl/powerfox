@@ -25,7 +25,7 @@ RUN cargo build
 FROM debian:bullseye
 
 # Copy the compiled binary from the builder stage to the final image
-COPY --from=builder /usr/src/powerfox/target/release/powerfox /usr/local/bin/powerfox
+COPY --from=builder /usr/src/powerfox/target/debug/powerfox /usr/local/bin/powerfox
 
 # Install system dependencies (if required by your application)
 RUN apt-get update && apt-get install -y pkg-config libssl-dev neovim gdb curl
