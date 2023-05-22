@@ -19,7 +19,7 @@ COPY src ./src
 COPY .env sqlx-data.json ./
 
 # Build the release version of the application
-RUN cargo build --release
+RUN cargo build
 
 # Create a new stage for the final minimal image
 FROM debian:bullseye
@@ -28,7 +28,7 @@ FROM debian:bullseye
 COPY --from=builder /usr/src/powerfox/target/release/powerfox /usr/local/bin/powerfox
 
 # Install system dependencies (if required by your application)
-RUN apt-get update && apt-get install -y pkg-config libssl-dev neovim
+RUN apt-get update && apt-get install -y pkg-config libssl-dev neovim gdb curl
 
 EXPOSE 3000
 
