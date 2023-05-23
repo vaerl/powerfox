@@ -16,7 +16,7 @@ FROM debian:bullseye
 
 # Copy the compiled binary from the builder stage to the final image
 COPY --from=builder /usr/src/powerfox/target/debug/powerfox /usr/local/bin/powerfox
-COPY --from=builder /usr/src/.env /usr/local/bin/.env
+COPY .env /usr/local/bin/.env
 
 EXPOSE 3000
 
