@@ -21,6 +21,7 @@ mod util;
 
 #[tokio::main]
 async fn main() -> Result<()> {
+    // TODO figure out why no logs
     info!("Starting server.");
     dotenv().ok();
 
@@ -28,7 +29,8 @@ async fn main() -> Result<()> {
     info!("dot-env is okay.");
 
     let app = Router::new().route("/powerfox/daily", get(powerfox_daily));
-    let addr = SocketAddr::from(([127, 0, 0, 1], port));
+    // TODO check if 0.0.0.0 exposes to outside world
+    let addr = SocketAddr::from(([0, 0, 0, 1], port));
     info!("Starting app.");
     axum::Server::bind(&addr)
         .serve(app.into_make_service())
