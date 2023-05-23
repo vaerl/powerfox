@@ -6,17 +6,8 @@ ENV PKG_CONFIG_ALLOW_CROSS=1
 # Create a new directory for the application code
 WORKDIR /usr/src/powerfox
 
-# Copy the Cargo.toml and Cargo.lock files to the container
-COPY Cargo.toml Cargo.lock ./
-
-# Build a dummy project to cache dependencies
-RUN mkdir src && \
-    echo "fn main() {}" > src/main.rs && \
-    cargo build --release
-
 # Copy the application source code to the container
-COPY src ./src
-COPY .env sqlx-data.json ./
+COPY . .
 
 # Build the release version of the application
 RUN cargo build

@@ -25,16 +25,17 @@ async fn main() -> Result<()> {
     dotenv().ok();
 
     let port: u16 = env::var("APP_PORT")?.parse()?;
-    debug!("dot-env is okay.");
+    info!("dot-env is okay.");
 
     let app = Router::new().route("/powerfox/daily", get(powerfox_daily));
     let addr = SocketAddr::from(([127, 0, 0, 1], port));
-    println!("Starting app.");
+    info!("Starting app.");
     axum::Server::bind(&addr)
         .serve(app.into_make_service())
         .await?;
 
     // TODO trigger with systemd
+    // TODO check if temperature is correct
     // TODO what now?
     // -> analyze data (use history from git-repo or whatever): send warnings depending on consumption, price and temperature
     // => recognize trends, f.e. if consumption starts getting higher; temperature is higher than $THRESHOLD, but there still was significant consumption (f.e. more than 20kWh)
