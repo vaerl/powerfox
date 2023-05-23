@@ -1,7 +1,6 @@
 # Use the official Rust image as the base image
 FROM rust:latest as builder
 ENV SQLX_OFFLINE=true
-ENV PKG_CONFIG_ALLOW_CROSS=1
 
 # Create a new directory for the application code
 WORKDIR /usr/src/powerfox
@@ -17,9 +16,7 @@ FROM debian:bullseye
 
 # Copy the compiled binary from the builder stage to the final image
 COPY --from=builder /usr/src/powerfox/target/debug/powerfox /usr/local/bin/powerfox
-
-# Install system dependencies (if required by your application)
-RUN apt-get update && apt-get install -y pkg-config libssl-dev neovim gdb curl
+COPY --from=builder /usr/src/.env /usr/local/bin/.env
 
 EXPOSE 3000
 
