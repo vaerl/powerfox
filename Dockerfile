@@ -17,7 +17,9 @@ FROM debian:bullseye
 
 # Copy the compiled binary from the builder stage to the final image
 COPY --from=builder /usr/src/powerfox/target/release/powerfox /usr/local/bin/powerfox
-COPY .env /usr/local/bin/.env
+
+# make certificates work
+RUN apt-get update && apt-get install -y ca-certificates && update-ca-certificates
 
 EXPOSE 3000
 
