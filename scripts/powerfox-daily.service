@@ -1,0 +1,10 @@
+[Unit]
+Description=Trigger daily powerfox-summary. 
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/bin/bash -c  'curl localhost:3000/powerfox/daily'
+
+[Install]
+WantedBy=multi-user.target
