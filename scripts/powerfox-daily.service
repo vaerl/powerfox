@@ -1,10 +1,9 @@
 [Unit]
-Description=Trigger daily powerfox-summary. 
+Description=Trigger a daily request to the powerfox-API.
 After=network.target
 
 [Service]
 Type=simple
 ExecStart=/bin/bash -c  'curl localhost:3000/powerfox/daily'
 
-[Install]
-WantedBy=multi-user.target
+# this does not need an install-section because the timer handles triggering

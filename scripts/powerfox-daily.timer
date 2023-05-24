@@ -2,7 +2,7 @@
 Description=Trigger a daily request to the powerfox-API.
 
 [Timer]
-OnCalendar=*-*-* 12:00:00
+OnCalendar=*-*-* 23:30:00
 Persistent=true
 
 [Install]
