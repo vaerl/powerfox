@@ -1,5 +1,5 @@
-ln -s powerfox-daily.timer /etc/systemd/system/powerfox-daily.timer
-ln -s powerfox-daily.service /etc/systemd/system/powerfox-daily.service
+sudo ln -s /home/lukas/powerfox/scripts/powerfox-daily.service /etc/systemd/system/powerfox-daily.service
+sudo ln -s /home/lukas/powerfox/scripts/powerfox-daily.timer /etc/systemd/system/powerfox-daily.timer
 
 systemctl daemon-reload
 
