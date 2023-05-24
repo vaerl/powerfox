@@ -30,7 +30,10 @@ async fn main() -> Result<()> {
 
     let app = Router::new().route("/powerfox/daily", get(powerfox_daily));
     // TODO check if 0.0.0.0 exposes to outside world
-    let addr = SocketAddr::from(([0, 0, 0, 1], port));
+
+    // TODO try this with actually correct values
+    let addr = SocketAddr::from(([0, 0, 0, 0], port));
+
     info!("Starting app.");
     axum::Server::bind(&addr)
         .serve(app.into_make_service())
