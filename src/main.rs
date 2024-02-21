@@ -22,6 +22,7 @@ mod util;
 #[tokio::main]
 async fn main() -> Result<()> {
     // TODO figure out why no logs
+    // TODO maybe move trigger and service to separate directory?
     info!("Starting server.");
     dotenv().ok();
 
@@ -39,13 +40,15 @@ async fn main() -> Result<()> {
         .serve(app.into_make_service())
         .await?;
 
-    // TODO trigger with systemd
     // TODO check if temperature is correct
+    // TODO include general costs
     // TODO what now?
     // -> analyze data (use history from git-repo or whatever): send warnings depending on consumption, price and temperature
     // => recognize trends, f.e. if consumption starts getting higher; temperature is higher than $THRESHOLD, but there still was significant consumption (f.e. more than 20kWh)
     // -> make variables configurable by Discord-commands or mail -> thresholds, costs, etc.
+    // do some of the above daily (cost compared to yesterday, a week before) and monthly (broader trends, etc.)
     // TODO host this publicly on gitlab or github to get dependabot-PRs
+    // TODO compare to Aqara-data?
     Ok(())
 }
 

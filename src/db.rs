@@ -123,6 +123,9 @@ pub struct Db {
     pool: PgPool,
 }
 
+// TODO this might leak connections - maybe don't abstract away and just pass &pool!?
+// more here: https://www.reddit.com/r/rust/comments/139xzqs/weird_behaviour_when_wrapping_a_sqlx_connection/
+// TODO turn down connections to something sensible afterwards
 impl Db {
     pub async fn new() -> Result<Self> {
         let username = env::var("DATABASE_USER")?;
