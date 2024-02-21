@@ -1,6 +1,7 @@
 use crate::powerfox::Powerfox;
 use anyhow::{anyhow, Result};
 use axum::{
+    body::Body,
     response::{IntoResponse, Response},
     routing::get,
     Router,
@@ -8,7 +9,7 @@ use axum::{
 use db::{CreateDay, Day, Db};
 use discord::Discord;
 use dotenv::dotenv;
-use log::{debug, error, info};
+use log::{error, info};
 use meteo::Meteo;
 use reqwest::StatusCode;
 use std::{env, net::SocketAddr};
@@ -36,9 +37,8 @@ async fn main() -> Result<()> {
     let addr = SocketAddr::from(([0, 0, 0, 0], port));
 
     info!("Starting app.");
-    axum::Server::bind(&addr)
-        .serve(app.into_make_service())
-        .await?;
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await?;
+    axum::serve(listener, app).await?;
 
     // TODO check if temperature is correct
     // TODO include general costs
@@ -125,12 +125,11 @@ struct AppError(anyhow::Error);
 
 // Tell axum how to convert `AppError` into a response.
 impl IntoResponse for AppError {
-    fn into_response(self) -> Response {
-        (
-            StatusCode::INTERNAL_SERVER_ERROR,
-            format!("Something went wrong: {}", self.0),
-        )
-            .into_response()
+    fn into_response(self) -> Response<Body> {
+        Response::builder()
+            .status(500)
+            .body(Body::from(format!("Something went wrong: {}", self.0)))
+            .unwrap()
     }
 }
 
