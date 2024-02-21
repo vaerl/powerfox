@@ -11,8 +11,7 @@ use discord::Discord;
 use dotenv::dotenv;
 use log::{error, info};
 use meteo::Meteo;
-use reqwest::StatusCode;
-use std::{env, net::SocketAddr};
+use std::env;
 
 mod db;
 mod discord;
@@ -33,11 +32,8 @@ async fn main() -> Result<()> {
     let app = Router::new().route("/powerfox/daily", get(powerfox_daily));
     // TODO check if 0.0.0.0 exposes to outside world
 
-    // TODO try this with actually correct values
-    let addr = SocketAddr::from(([0, 0, 0, 0], port));
-
     info!("Starting app.");
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await?;
+    let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{}", port)).await?;
     axum::serve(listener, app).await?;
 
     // TODO check if temperature is correct
