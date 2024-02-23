@@ -1,5 +1,4 @@
 use anyhow::Result;
-use chrono::format;
 use poise::serenity_prelude as serenity;
 use serenity::{model::prelude::*, Client};
 use std::env;
@@ -32,6 +31,7 @@ impl Discord {
                     ],
                     ..Default::default()
                 },
+                on_error: |error| Box::pin(on_error(error)),
                 ..Default::default()
             })
             .setup(|ctx, _ready, framework| {
@@ -55,6 +55,23 @@ impl Discord {
             .await?;
 
         Ok(())
+    }
+}
+
+async fn on_error(error: poise::FrameworkError<'_, Data, Error>) {
+    // This is our custom error handler
+    // They are many errors that can occur, so we only handle the ones we want to customize
+    // and forward the rest to the default handler
+    match error {
+        poise::FrameworkError::Setup { error, .. } => panic!("Failed to start bot: {:?}", error),
+        poise::FrameworkError::Command { error, ctx, .. } => {
+            println!("Error in command `{}`: {:?}", ctx.command().name, error,);
+        }
+        error => {
+            if let Err(e) = poise::builtins::on_error(error).await {
+                println!("Error while handling error: {}", e)
+            }
+        }
     }
 }
 

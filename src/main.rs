@@ -33,7 +33,7 @@ async fn main() -> Result<()> {
     // TODO check if 0.0.0.0 exposes to outside world
 
     info!("Starting app.");
-    powerfox_daily().await?;
+    powerfox_daily().await.expect("Something went wrong.");
     let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{}", port)).await?;
     axum::serve(listener, app).await?;
 
@@ -46,7 +46,9 @@ async fn main() -> Result<()> {
     // TODO host this publicly on gitlab or github to get dependabot-PRs
     // TODO compare to Aqara-data?
 
-    powerfox_daily().await?;
+    powerfox_daily()
+        .await
+        .expect("Something went wrong after serve.");
     Ok(())
 }
 
@@ -55,7 +57,7 @@ async fn powerfox_daily() -> Result<(), AppError> {
     let db = Db::new().await?;
     let discord = Discord::new(db.clone()).await?;
 
-    discord.say(format!("Getting yesterday's data.")).await?;
+    discord.say("Getting yesterday's data.".to_string()).await?;
     match get_and_write_data(&db).await {
         Ok(day) => {
             let config = db.get_config().await?;
@@ -119,6 +121,7 @@ async fn get_and_write_data(db: &Db) -> Result<Day> {
 }
 
 // Make our own error that wraps `anyhow::Error`.
+#[derive(Debug)]
 struct AppError(anyhow::Error);
 
 // Tell axum how to convert `AppError` into a response.
