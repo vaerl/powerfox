@@ -1,8 +1,8 @@
 {
     "rust-analyzer.runnables.extraEnv": {
-        "RUST_LOG": "debug"
+        "RUST_INO": "info"
     },
     "rust-analyzer.cargo.extraEnv": {
-        "RUST_LOG": "debug"
+        "RUST_LOG": "info"
     }
 }

@@ -9,6 +9,7 @@ use axum::{
 use db::{CreateDay, Day, Db};
 use discord::Discord;
 use dotenv::dotenv;
+use env_logger::{Builder, Target};
 use log::{error, info};
 use meteo::Meteo;
 use std::env;
@@ -21,7 +22,10 @@ mod util;
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    // TODO figure out why no logs
+    let mut builder = Builder::from_default_env();
+    builder.target(Target::Stdout);
+    builder.init();
+
     // TODO maybe move trigger and service to separate directory?
     info!("Starting server.");
     dotenv().ok();

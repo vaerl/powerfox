@@ -5,12 +5,16 @@
 			"type": "cargo",
 			"command": "run",
 			"env": {
-				"RUST_LOG": "debug"
+				"RUST_LOG": "info,tracing::span=warn,serenity=warn"
 			},
 			"problemMatcher": [
 				"$rustc"
 			],
-			"label": "rust: cargo run"
+			"label": "rust: cargo run",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
 		}
 	]
 }
