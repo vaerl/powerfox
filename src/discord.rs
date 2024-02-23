@@ -25,6 +25,14 @@ impl Discord {
             .options(poise::FrameworkOptions {
                 // NOTE this error seems okay - it doesn't show up when running cargo check or the like
                 commands: vec![age(), app_info()],
+                prefix_options: poise::PrefixFrameworkOptions {
+                    prefix: Some("!".into()),
+                    additional_prefixes: vec![
+                        poise::Prefix::Literal("hey bot"),
+                        poise::Prefix::Literal("hey bot,"),
+                    ],
+                    ..Default::default()
+                },
                 ..Default::default()
             })
             .setup(|ctx, _ready, framework| {
