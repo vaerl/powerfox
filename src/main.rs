@@ -36,7 +36,6 @@ async fn main() -> Result<()> {
     let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{}", port)).await?;
     axum::serve(listener, app).await?;
 
-    // TODO check if temperature is correct
     // TODO include general costs
     // TODO what now?
     // -> analyze data (use history from git-repo or whatever): send warnings depending on consumption, price and temperature
