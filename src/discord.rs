@@ -17,9 +17,8 @@ impl Discord {
     pub async fn new(db: Db) -> Result<Self> {
         let token = env::var("DISCORD_TOKEN")?;
         let channel_id = ChannelId::new(env::var("DISCORD_CHANNEL_ID")?.parse()?);
-        let intents = GatewayIntents::GUILD_MESSAGES
-            | GatewayIntents::DIRECT_MESSAGES
-            | GatewayIntents::MESSAGE_CONTENT;
+        let intents =
+            serenity::GatewayIntents::non_privileged() | serenity::GatewayIntents::MESSAGE_CONTENT;
 
         let framework = poise::Framework::builder()
             .options(poise::FrameworkOptions {
@@ -43,11 +42,10 @@ impl Discord {
             })
             .build();
 
-        let client = serenity::ClientBuilder::new(token, intents)
+        let mut client = serenity::ClientBuilder::new(token, intents)
             .framework(framework)
             .await?;
-
-        //let client = Client::builder(&token, intents).await?;
+        client.start().await?;
         Ok(Discord { client, channel_id })
     }
 
