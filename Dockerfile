@@ -13,7 +13,7 @@ COPY . .
 RUN cargo build --release
 
 # Create a new stage for the final minimal image
-FROM debian:bullseye
+FROM debian:bookworm-slim
 
 # Copy the compiled binary from the builder stage to the final image
 COPY --from=builder /usr/src/powerfox/target/release/powerfox /usr/local/bin/powerfox
