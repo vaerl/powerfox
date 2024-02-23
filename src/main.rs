@@ -33,6 +33,7 @@ async fn main() -> Result<()> {
     // TODO check if 0.0.0.0 exposes to outside world
 
     info!("Starting app.");
+    powerfox_daily().await?;
     let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{}", port)).await?;
     axum::serve(listener, app).await?;
 
@@ -44,6 +45,8 @@ async fn main() -> Result<()> {
     // do some of the above daily (cost compared to yesterday, a week before) and monthly (broader trends, etc.)
     // TODO host this publicly on gitlab or github to get dependabot-PRs
     // TODO compare to Aqara-data?
+
+    powerfox_daily().await?;
     Ok(())
 }
 
