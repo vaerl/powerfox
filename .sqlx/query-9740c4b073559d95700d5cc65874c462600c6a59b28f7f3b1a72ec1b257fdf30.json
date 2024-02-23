@@ -1,0 +1,50 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "INSERT INTO config (id, cost_heating, cost_general, monthly_budget_heating, monthly_budget_general) VALUES ($1, $2, $3, $4, $5) RETURNING id, cost_heating, cost_general, monthly_budget_heating, monthly_budget_general",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "cost_heating",
+        "type_info": "Float8"
+      },
+      {
+        "ordinal": 2,
+        "name": "cost_general",
+        "type_info": "Float8"
+      },
+      {
+        "ordinal": 3,
+        "name": "monthly_budget_heating",
+        "type_info": "Float8"
+      },
+      {
+        "ordinal": 4,
+        "name": "monthly_budget_general",
+        "type_info": "Float8"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Float8",
+        "Float8",
+        "Float8",
+        "Float8"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "9740c4b073559d95700d5cc65874c462600c6a59b28f7f3b1a72ec1b257fdf30"
+}

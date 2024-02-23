@@ -1,0 +1,46 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT * FROM days WHERE date > $1",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "heating_consumption",
+        "type_info": "Float8"
+      },
+      {
+        "ordinal": 2,
+        "name": "general_consumption",
+        "type_info": "Float8"
+      },
+      {
+        "ordinal": 3,
+        "name": "average_temperature",
+        "type_info": "Float8"
+      },
+      {
+        "ordinal": 4,
+        "name": "date",
+        "type_info": "Date"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Date"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "46134046efc1623e389a7dfe8ee0042c713368eff27c6608f3d162864d6a995c"
+}

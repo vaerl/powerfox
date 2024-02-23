@@ -1,0 +1,44 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT * FROM config",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "cost_heating",
+        "type_info": "Float8"
+      },
+      {
+        "ordinal": 2,
+        "name": "cost_general",
+        "type_info": "Float8"
+      },
+      {
+        "ordinal": 3,
+        "name": "monthly_budget_heating",
+        "type_info": "Float8"
+      },
+      {
+        "ordinal": 4,
+        "name": "monthly_budget_general",
+        "type_info": "Float8"
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "922dda0d16b61a25068183d3b7c7892ad15d72e175433a4e35cab33d0263acfb"
+}

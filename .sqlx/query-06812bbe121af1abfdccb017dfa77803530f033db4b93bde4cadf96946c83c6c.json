@@ -1,0 +1,50 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "UPDATE days SET (heating_consumption, general_consumption, average_temperature, date) = ($1, $2, $3, $4) WHERE id = $5 RETURNING id, heating_consumption, general_consumption, average_temperature, date",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "heating_consumption",
+        "type_info": "Float8"
+      },
+      {
+        "ordinal": 2,
+        "name": "general_consumption",
+        "type_info": "Float8"
+      },
+      {
+        "ordinal": 3,
+        "name": "average_temperature",
+        "type_info": "Float8"
+      },
+      {
+        "ordinal": 4,
+        "name": "date",
+        "type_info": "Date"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Float8",
+        "Float8",
+        "Float8",
+        "Date",
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "06812bbe121af1abfdccb017dfa77803530f033db4b93bde4cadf96946c83c6c"
+}

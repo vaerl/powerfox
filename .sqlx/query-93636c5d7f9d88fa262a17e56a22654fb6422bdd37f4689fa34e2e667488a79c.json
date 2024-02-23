@@ -1,0 +1,50 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "UPDATE config SET (cost_heating, cost_general, monthly_budget_heating, monthly_budget_general) = ($1, $2, $3, $4) WHERE id = $5 RETURNING id, cost_heating, cost_general, monthly_budget_heating, monthly_budget_general",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "cost_heating",
+        "type_info": "Float8"
+      },
+      {
+        "ordinal": 2,
+        "name": "cost_general",
+        "type_info": "Float8"
+      },
+      {
+        "ordinal": 3,
+        "name": "monthly_budget_heating",
+        "type_info": "Float8"
+      },
+      {
+        "ordinal": 4,
+        "name": "monthly_budget_general",
+        "type_info": "Float8"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Float8",
+        "Float8",
+        "Float8",
+        "Float8",
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "93636c5d7f9d88fa262a17e56a22654fb6422bdd37f4689fa34e2e667488a79c"
+}

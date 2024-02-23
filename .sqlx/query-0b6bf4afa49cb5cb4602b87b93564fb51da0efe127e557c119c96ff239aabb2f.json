@@ -1,0 +1,50 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "INSERT INTO days (id, heating_consumption, general_consumption, average_temperature, date) VALUES ($1, $2, $3, $4, $5) RETURNING id, heating_consumption, general_consumption, average_temperature, date",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "heating_consumption",
+        "type_info": "Float8"
+      },
+      {
+        "ordinal": 2,
+        "name": "general_consumption",
+        "type_info": "Float8"
+      },
+      {
+        "ordinal": 3,
+        "name": "average_temperature",
+        "type_info": "Float8"
+      },
+      {
+        "ordinal": 4,
+        "name": "date",
+        "type_info": "Date"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Float8",
+        "Float8",
+        "Float8",
+        "Date"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "0b6bf4afa49cb5cb4602b87b93564fb51da0efe127e557c119c96ff239aabb2f"
+}
