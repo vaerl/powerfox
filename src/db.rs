@@ -118,7 +118,7 @@ impl CreateDay {
     }
 }
 
-
+#[derive(Clone)]
 pub struct Db {
     pool: PgPool,
 }

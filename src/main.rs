@@ -49,8 +49,8 @@ async fn main() -> Result<()> {
 
 async fn powerfox_daily() -> Result<(), AppError> {
     info!("Getting yesterday's data.");
-    let discord = Discord::new().await?;
     let db = Db::new().await?;
+    let discord = Discord::new(db.clone()).await?;
 
     discord.say(format!("Getting yesterday's data.")).await?;
     match get_and_write_data(&db).await {
