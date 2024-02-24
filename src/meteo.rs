@@ -24,12 +24,34 @@ impl Meteo {
 
     /// Gets the temperature for this day from 00:00 to 23:00.
     ///
-    /// See [this URL](https://api.open-meteo.com/v1/forecast?latitude=51.28&longitude=8.87&hourly=temperature_2m&forecast_days=1) for more information.
+    /// See [this URL](https://api.open-meteo.com/v1/forecast?latitude=51.28&longitude=8.87&hourly=temperature_2m&forecast_days=1&past_days=1) for more information.
     pub async fn get_temperature_for_yesterday(&self) -> Result<TemperatureData> {
         let response = self
             .client
             .get(format!(
-                "{}/v1/forecast?latitude={}&longitude={}&hourly=temperature_2m&past_days=1",
+                "{}/v1/forecast?latitude={}&longitude={}&hourly=temperature_2m&forecast_days=1&past_days=1",
+                &self.base_url, &self.latitude, &self.longitude
+            ))
+            .send()
+            .await?;
+        if response.status() != StatusCode::OK {
+            Err(anyhow!(
+                "Status-Code of response was not OK: {}",
+                response.text().await?
+            ))
+        } else {
+            Ok(response.json().await?)
+        }
+    }
+
+    /// Gets the temperature for this day from 00:00 to 23:00.
+    ///
+    /// See [this URL](https://api.open-meteo.com/v1/forecast?latitude=51.28&longitude=8.87&hourly=temperature_2m&forecast_days=1) for more information.
+    pub async fn get_temperature_for_today(&self) -> Result<TemperatureData> {
+        let response = self
+            .client
+            .get(format!(
+                "{}/v1/forecast?latitude={}&longitude={}&hourly=temperature_2m&forecast_days=1",
                 &self.base_url, &self.latitude, &self.longitude
             ))
             .send()

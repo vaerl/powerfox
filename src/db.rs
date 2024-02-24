@@ -1,6 +1,7 @@
-use crate::powerfox::Report;
-use anyhow::{anyhow, Result};
+use crate::{meteo::Meteo, powerfox::{Powerfox, Report}};
+use anyhow::{anyhow, bail, Result};
 use chrono::{Datelike, Local, NaiveDate, Duration};
+use log::info;
 use serenity::utils::MessageBuilder;
 use sqlx::{
     postgres::{PgConnectOptions, PgPoolOptions},
@@ -92,18 +93,35 @@ impl Day {
 
 impl Days {
     pub fn summary(&self, config: &Config) -> Result<String> {
-        if let Some(total_heating_cost) = self.0.iter().map(|d| d.heating_cost(&config.cost_heating)).reduce(|a, b| a + b) {
-            let message = MessageBuilder::new()
-                .push_quote("This month, you've used ")
-                .push_bold_safe(format!("{:.2} €", total_heating_cost))
-                .push(" of ")
-                .push_bold_safe(format!("{:.2} €", config.monthly_budget_heating))
-                .push(".")
-                .build();
-            return Ok(message);
+        match self.heating_cost(&config.cost_heating) {
+            Ok(total_heating_cost) => {
+                let message = MessageBuilder::new()
+                    .push_quote("This month, you've used ")
+                    .push_bold_safe(format!("{:.2} €", total_heating_cost))
+                    .push(" of ")
+                    .push_bold_safe(format!("{:.2} €", config.monthly_budget_heating))
+                    .push(".")
+                    .build();
+                Ok(message)
+            }
+            _ =>  bail!("Could not reduce costs to calculate total cost."),
         }
-        
-        Err(anyhow!("Could not reduce costs to calculate total cost."))
+    }
+
+    pub fn heating_cost(&self, cost: &f64) -> Result<f64> {
+        let consumption = self.0.iter().map(|d| d.heating_cost(cost)).reduce(|a, b| a + b);
+        match consumption {
+            Some(val) => Ok(val),
+            None => bail!("Could not calculate heating-consumption."),
+        }
+    }
+
+    pub fn general_cost(&self, cost: &f64) -> Result<f64> {
+        let consumption = self.0.iter().map(|d| d.general_cost(cost)).reduce(|a, b| a + b);
+        match consumption {
+            Some(val) => Ok(val),
+            None => bail!("Could not calculate general-consumption."),
+        }
     }
 }
 
@@ -123,9 +141,7 @@ pub struct Db {
     pool: PgPool,
 }
 
-// TODO this might leak connections - maybe don't abstract away and just pass &pool!?
-// more here: https://www.reddit.com/r/rust/comments/139xzqs/weird_behaviour_when_wrapping_a_sqlx_connection/
-// TODO turn down connections to something sensible afterwards
+
 impl Db {
     pub async fn new() -> Result<Self> {
         let username = env::var("DATABASE_USER")?;
@@ -142,10 +158,11 @@ impl Db {
             .database(&database);
 
         let pool = PgPoolOptions::new()
-            .max_connections(5) // Adjust the maximum number of connections as needed
+            .max_connections(5) 
             .connect_with(options)
             .await?;
 
+        info!("Set up database-client.");
         Ok(Db {pool})
     }
 
@@ -184,6 +201,48 @@ impl Db {
     pub async fn get_yesterday(&self) -> Result<Day> {
         let yesterday = Local::now().date_naive() - Duration::days(1);
         self.get_day(yesterday).await
+    }
+
+    /// Create the entry for yesterday. Loads from the database if it exists already
+    pub async fn create_yesterday(&self) -> Result<Day> {
+            // if we have the data already, just return it to save on API-calls
+    if let Ok(day) = self.get_yesterday().await {
+        return Ok(day);
+    }
+
+    let meteo = Meteo::new()?;
+    let temperature = meteo.get_temperature_for_yesterday().await?;
+
+    let powerfox = Powerfox::new()?;
+    let devices = powerfox.get_devices().await?;
+
+    let mut heating_report = None;
+    let mut general_report = None;
+    for device in devices {
+        if device.name == "Heizstrom" {
+            heating_report = Some(powerfox.get_report_for_yesterday(&device.device_id).await?);
+        }
+
+        if device.name == "Allgemeinstrom" {
+            general_report = Some(powerfox.get_report_for_yesterday(&device.device_id).await?);
+        }
+
+        // checking this in the loop might be beneficial if there are multiple other devices
+        if heating_report.is_some() && general_report.is_some() {
+            let yesterday = CreateDay::yesterday(
+                // we can just unwrap here because we check with is_some() before
+                heating_report.unwrap(),
+                general_report.unwrap(),
+                temperature.average_temperature()?,
+            );
+
+            return self.save_yesterday(yesterday).await;
+        }
+    }
+
+    Err(anyhow!(
+        "Could not get all necessary data for the current day."
+    ))
     }
 
     /// Get all the days from the database.

@@ -1,18 +1,13 @@
-use crate::powerfox::Powerfox;
-use anyhow::{anyhow, Result};
-use axum::{
-    body::Body,
-    response::{IntoResponse, Response},
-    routing::get,
-    Router,
-};
-use db::{CreateDay, Day, Db};
-use discord::Discord;
+use crate::discord::{say, start_bot};
+use anyhow::Result;
+use db::Db;
 use dotenv::dotenv;
 use env_logger::{Builder, Target};
 use log::{error, info};
-use meteo::Meteo;
+use poise::serenity_prelude as serenity;
+use serenity::model::prelude::*;
 use std::env;
+use tokio_cron_scheduler::{Job, JobScheduler};
 
 mod db;
 mod discord;
@@ -26,20 +21,36 @@ async fn main() -> Result<()> {
     builder.target(Target::Stdout);
     builder.init();
 
-    // TODO maybe move trigger and service to separate directory?
-    info!("Starting server.");
-    dotenv().ok();
-
-    let port: u16 = env::var("APP_PORT")?.parse()?;
-    info!("dot-env is okay.");
-
-    let app = Router::new().route("/powerfox/daily", get(powerfox_daily));
-    // TODO check if 0.0.0.0 exposes to outside world
-
     info!("Starting app.");
-    powerfox_daily().await.expect("Something went wrong.");
-    let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{}", port)).await?;
-    axum::serve(listener, app).await?;
+    dotenv().ok();
+    // TODO the bot-permission-stiff is the important part
+
+    // setup
+    let db = Db::new().await?;
+    let cloned_db = db.clone();
+    let token = env::var("DISCORD_TOKEN")?;
+    let intents = serenity::GatewayIntents::non_privileged();
+
+    // schedule the daily message
+    let sched = JobScheduler::new().await?;
+
+    // schedule daily job
+    sched
+        .add(Job::new_async("0 12 * * * *", move |_uuid, mut _l| {
+            let db = db.clone();
+            Box::pin(async move {
+                let token = env::var("DISCORD_TOKEN").expect("Could not find DISCORD_TOKEN");
+                powerfox_daily(&token.clone(), &db)
+                    .await
+                    .expect("Could not execute daily task.");
+            })
+        })?)
+        .await?;
+    sched.start().await?;
+
+    // start the bot
+    // TODO check if we can use &Db
+    start_bot(&token, intents, cloned_db).await?;
 
     // TODO include general costs
     // TODO what now?
@@ -48,103 +59,28 @@ async fn main() -> Result<()> {
     // -> make variables configurable by Discord-commands or mail -> thresholds, costs, etc.
     // do some of the above daily (cost compared to yesterday, a week before) and monthly (broader trends, etc.)
     // TODO host this publicly on gitlab or github to get dependabot-PRs
-    // TODO compare to Aqara-data?
-
-    powerfox_daily()
-        .await
-        .expect("Something went wrong after serve.");
     Ok(())
 }
 
-async fn powerfox_daily() -> Result<(), AppError> {
-    info!("Getting yesterday's data.");
-    let db = Db::new().await?;
-    let discord = Discord::new(db.clone()).await?;
+async fn powerfox_daily(token: &str, db: &Db) -> Result<()> {
+    info!("Writing yesterday's data to Discord.");
+    let channel_id = ChannelId::new(env::var("DISCORD_CHANNEL_ID")?.parse()?);
+    say(token, channel_id, "Getting yesterday's data.".to_string()).await?;
 
-    discord.say("Getting yesterday's data.".to_string()).await?;
-    match get_and_write_data(&db).await {
+    match db.create_yesterday().await {
         Ok(day) => {
             let config = db.get_config().await?;
-            discord.say(day.summary(&config.cost_heating)).await?;
+            say(token, channel_id, day.summary(&config.cost_heating)).await?;
 
             let days = db.get_days_of_month().await?;
-            discord.say(days.summary(&config)?).await?;
+            say(token, channel_id, days.summary(&config)?).await?;
             info!("Done with daily data and summary.")
         }
         Err(err) => {
             let error = format!("Encountered an error: {}", err);
             error!("{}", error);
-            discord.say(error).await?
+            say(token, channel_id, error).await?;
         }
     }
     Ok(())
-}
-
-async fn get_and_write_data(db: &Db) -> Result<Day> {
-    // if we have the data already, just return it to save on API-calls
-    if let Ok(day) = db.get_yesterday().await {
-        return Ok(day);
-    }
-
-    let meteo = Meteo::new()?;
-    let temperature = meteo.get_temperature_for_yesterday().await?;
-
-    let powerfox = Powerfox::new()?;
-    let devices = powerfox.get_devices().await?;
-
-    if devices.len() != 2 {
-        return Err(anyhow!("Found more than two devices, aborting."));
-    }
-
-    let mut heating_report = None;
-    let mut general_report = None;
-    for device in devices {
-        if device.name == "Heizstrom" {
-            heating_report = Some(powerfox.get_report_for_yesterday(&device.device_id).await?);
-        }
-
-        if device.name == "Allgemeinstrom" {
-            general_report = Some(powerfox.get_report_for_yesterday(&device.device_id).await?);
-        }
-
-        if heating_report.is_some() && general_report.is_some() {
-            let yesterday = CreateDay::yesterday(
-                // we can just unwrap here because we check with is_some() before
-                heating_report.unwrap(),
-                general_report.unwrap(),
-                temperature.average_temperature()?,
-            );
-
-            return db.save_yesterday(yesterday).await;
-        }
-    }
-
-    Err(anyhow!(
-        "Could not get all necessary data for the current day."
-    ))
-}
-
-// Make our own error that wraps `anyhow::Error`.
-#[derive(Debug)]
-struct AppError(anyhow::Error);
-
-// Tell axum how to convert `AppError` into a response.
-impl IntoResponse for AppError {
-    fn into_response(self) -> Response<Body> {
-        Response::builder()
-            .status(500)
-            .body(Body::from(format!("Something went wrong: {}", self.0)))
-            .unwrap()
-    }
-}
-
-// This enables using `?` on functions that return `Result<_, anyhow::Error>` to turn them into
-// `Result<_, AppError>`. That way you don't need to do that manually.
-impl<E> From<E> for AppError
-where
-    E: Into<anyhow::Error>,
-{
-    fn from(err: E) -> Self {
-        Self(err.into())
-    }
 }
