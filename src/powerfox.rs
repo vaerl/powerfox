@@ -46,24 +46,6 @@ impl Powerfox {
         }
     }
 
-    /// Get the values of all devices for the last 24 hours.
-    pub async fn get_report(&self) -> Result<Report> {
-        let response = self
-            .client
-            .get(format!("{}/api/2.0/my/all/report", &self.base_url))
-            .basic_auth(&self.username, Some(&self.password))
-            .send()
-            .await?;
-        if response.status() != StatusCode::OK {
-            Err(anyhow!(
-                "Status-Code of response was not OK: {}",
-                response.text().await?
-            ))
-        } else {
-            Ok(response.json().await?)
-        }
-    }
-
     /// Get the values of the specified device for the last 24 hours.
     pub async fn get_report_for_yesterday(&self, device_id: &String) -> Result<Report> {
         let yesterday = Local::now().date_naive() - Duration::days(1);
