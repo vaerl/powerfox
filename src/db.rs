@@ -12,30 +12,23 @@ use std::env;
 
 #[derive(sqlx::FromRow)]
 pub struct Config {
-    id: Uuid,
+    pub id: Uuid,
     pub cost_heating: f64,
     pub cost_general: f64,
     pub monthly_budget_heating: f64,
     pub monthly_budget_general: f64,
 }
 
-
-pub struct CreateConfig {
-    cost_heating: f64,
-    cost_general: f64,
-    monthly_budget_heating: f64,
-    monthly_budget_general: f64,
-}
-
 impl Config {
-    pub fn new(cost_heating: f64, cost_general: f64,  monthly_budget_heating: f64, monthly_budget_general: f64) -> Self {
-        Config {
-            id: Uuid::new_v4(),
-            cost_heating,
-            cost_general,
-            monthly_budget_heating,
-            monthly_budget_general,
-        }
+
+    /// Create a new [Config] with an updated value for [cost_heating].
+    pub fn with_cost_heating(self, cost_heating: f64) -> Self {
+        Config { id: self.id, cost_heating, cost_general: self.cost_general, monthly_budget_heating: self.monthly_budget_heating, monthly_budget_general: self.monthly_budget_general }
+    }
+
+    /// Create a new [Config] with an updated value for [cost_general].
+    pub fn with_cost_general(self, cost_general: f64) -> Self {
+        Config { id: self.id, cost_heating: self.cost_heating, cost_general, monthly_budget_heating: self.monthly_budget_heating, monthly_budget_general: self.monthly_budget_general }
     }
 }
 
@@ -245,14 +238,6 @@ impl Db {
     ))
     }
 
-    /// Get all the days from the database.
-    pub async fn get_days(&self) -> Result<Days> {
-        let days = sqlx::query_as!(Day, "SELECT * FROM days")
-            .fetch_all(&self.pool)
-            .await?;
-        Ok(Days(days))
-    }
-
     pub async fn get_days_of_month(&self) -> Result<Days> {
         let current_date = Local::now().naive_local();
         let first_of_month = NaiveDate::from_ymd_opt(current_date.year(), current_date.month(), 1)
@@ -273,7 +258,8 @@ impl Db {
         Ok(config)
     }
 
-    pub async fn update_config(&self, id: Uuid, config: CreateConfig) -> Result<Config> {
+    /// Update the existing config.
+    pub async fn update_config(&self, id: Uuid, config: Config) -> Result<Config> {
         let config = sqlx::query_as!(Config, 
             "UPDATE config SET (cost_heating, cost_general, monthly_budget_heating, monthly_budget_general) = ($1, $2, $3, $4) WHERE id = $5 RETURNING id, cost_heating, cost_general, monthly_budget_heating, monthly_budget_general", config.cost_heating, config.cost_general, config.monthly_budget_heating, config.monthly_budget_general, id)
             .fetch_one(&self.pool)
