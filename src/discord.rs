@@ -1,5 +1,6 @@
 use ::serenity::all::Http;
 use anyhow::Result;
+use log::info;
 use poise::{samples::HelpConfiguration, serenity_prelude as serenity};
 use serenity::model::prelude::*;
 use std::env;
@@ -78,6 +79,9 @@ async fn yesterday(ctx: Context<'_>) -> Result<(), Error> {
 /// Display today's heating-info.
 #[poise::command(slash_command, prefix_command)]
 async fn today(ctx: Context<'_>) -> Result<(), Error> {
+    // There needs to be a response in the first 3 seconds or Discord treats this as an error.
+    // Following messages are still sent.
+    ctx.say("Computing data for today.").await?;
     let config = ctx.data().db.get_config().await?;
     let meteo = Meteo::new()?;
     let temperature = meteo.get_temperature_for_today().await?;
@@ -111,6 +115,8 @@ async fn today(ctx: Context<'_>) -> Result<(), Error> {
         ctx.say("Something went wrong.").await?;
     }
 
+    // because this takes some time, this log is used to check if the task is completed
+    info!("Done with /today");
     Ok(())
 }
 
