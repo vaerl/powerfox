@@ -30,6 +30,15 @@ impl Config {
     pub fn with_cost_general(self, cost_general: f64) -> Self {
         Config { id: self.id, cost_heating: self.cost_heating, cost_general, monthly_budget_heating: self.monthly_budget_heating, monthly_budget_general: self.monthly_budget_general }
     }
+
+    /// Create a new [Config] with an updated value for [monthly_budget_heating].
+    pub fn with_monthly_budget_heating(self, monthly_budget_heating: f64) -> Self {
+        Config { id: self.id, cost_heating: self.cost_heating, cost_general: self.cost_general, monthly_budget_heating, monthly_budget_general: self.monthly_budget_general }
+    }
+    /// Create a new [Config] with an updated value for [monthly_budget_general].
+    pub fn with_monthly_budget_general(self, monthly_budget_general: f64) -> Self {
+        Config { id: self.id, cost_heating: self.cost_heating, cost_general: self.cost_general, monthly_budget_heating: self.monthly_budget_heating, monthly_budget_general }
+    }
 }
 
 #[derive(sqlx::FromRow, Debug)]

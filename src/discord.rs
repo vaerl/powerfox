@@ -18,7 +18,7 @@ pub async fn start_bot(token: &str, intents: GatewayIntents, db: Db) -> Result<(
                 yesterday(),
                 today(),
                 month(),
-                budget(),
+                budgets(),
                 costs(),
                 help(),
                 config(),
@@ -115,7 +115,7 @@ async fn today(ctx: Context<'_>) -> Result<(), Error> {
 
 /// Display the configured budgets.
 #[poise::command(slash_command, prefix_command)]
-async fn budget(ctx: Context<'_>) -> Result<(), Error> {
+async fn budgets(ctx: Context<'_>) -> Result<(), Error> {
     let config = ctx.data().db.get_config().await?;
     ctx.say(format!(
         "Heating-Budget: {}€\nGeneral Budget: {}€",
@@ -153,7 +153,7 @@ async fn month(ctx: Context<'_>) -> Result<(), Error> {
 }
 
 /// Update config-values. For viewing values, see /costs and /budget.
-#[poise::command(prefix_command, slash_command, subcommands("cost"))]
+#[poise::command(prefix_command, slash_command, subcommands("cost", "budget"))]
 pub async fn config(ctx: Context<'_>, _arg: String) -> Result<(), Error> {
     ctx.say("Please call this command with a subcommand.")
         .await?;
@@ -161,16 +161,32 @@ pub async fn config(ctx: Context<'_>, _arg: String) -> Result<(), Error> {
 }
 
 /// Update cost-config-values. For viewing costs, see /costs.
-#[poise::command(prefix_command, slash_command, subcommands("heating", "general"))]
+#[poise::command(
+    prefix_command,
+    slash_command,
+    subcommands("cost_heating", "cost_general")
+)]
 pub async fn cost(ctx: Context<'_>, _arg: String) -> Result<(), Error> {
     ctx.say("Please call this command with a subcommand.")
         .await?;
     Ok(())
 }
 
+/// Update cost-config-values. For viewing costs, see /costs.
+#[poise::command(
+    prefix_command,
+    slash_command,
+    subcommands("budget_heating", "budget_general")
+)]
+pub async fn budget(ctx: Context<'_>, _arg: String) -> Result<(), Error> {
+    ctx.say("Please call this command with a subcommand.")
+        .await?;
+    Ok(())
+}
+
 /// Update the heating-cost.
-#[poise::command(prefix_command, slash_command)]
-pub async fn heating(ctx: Context<'_>, cost_heating: String) -> Result<(), Error> {
+#[poise::command(prefix_command, slash_command, rename = "heating")]
+pub async fn cost_heating(ctx: Context<'_>, cost_heating: String) -> Result<(), Error> {
     let mut config = ctx.data().db.get_config().await?;
     config = config.with_cost_heating(cost_heating.parse::<f64>()?);
     config = ctx.data().db.update_config(config.id, config).await?;
@@ -180,13 +196,41 @@ pub async fn heating(ctx: Context<'_>, cost_heating: String) -> Result<(), Error
 }
 
 /// Update the general-cost.
-#[poise::command(prefix_command, slash_command)]
-pub async fn general(ctx: Context<'_>, cost_general: String) -> Result<(), Error> {
+#[poise::command(prefix_command, slash_command, rename = "general")]
+pub async fn cost_general(ctx: Context<'_>, cost_general: String) -> Result<(), Error> {
     let mut config = ctx.data().db.get_config().await?;
     config = config.with_cost_general(cost_general.parse::<f64>()?);
     config = ctx.data().db.update_config(config.id, config).await?;
     ctx.say(format!("Updated general-cost to {}€.", config.cost_general))
         .await?;
+    Ok(())
+}
+
+/// Update the heating-budget.
+#[poise::command(prefix_command, slash_command, rename = "heating")]
+pub async fn budget_heating(ctx: Context<'_>, monthly_budget_heating: String) -> Result<(), Error> {
+    let mut config = ctx.data().db.get_config().await?;
+    config = config.with_monthly_budget_heating(monthly_budget_heating.parse::<f64>()?);
+    config = ctx.data().db.update_config(config.id, config).await?;
+    ctx.say(format!(
+        "Updated heating-budget to {}€.",
+        config.monthly_budget_heating
+    ))
+    .await?;
+    Ok(())
+}
+
+/// Update the general-budget.
+#[poise::command(prefix_command, slash_command, rename = "general")]
+pub async fn budget_general(ctx: Context<'_>, monthly_budget_general: String) -> Result<(), Error> {
+    let mut config = ctx.data().db.get_config().await?;
+    config = config.with_monthly_budget_general(monthly_budget_general.parse::<f64>()?);
+    config = ctx.data().db.update_config(config.id, config).await?;
+    ctx.say(format!(
+        "Updated general-budget to {}€.",
+        config.monthly_budget_general
+    ))
+    .await?;
     Ok(())
 }
 
