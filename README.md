@@ -2,6 +2,13 @@
 
 Server and `systemd`-service/trigger to automatically read your power-consumption and calculate costs.
 
+## Setup
+
+Make sure that the database contains config-values.
+See [this file](./sql/initial-config.sql) for more information.
+
+This could be implemented with a bot-command, but this seems annoying.
+
 ## Database-Access
 
 `sqlx` requires a super-user [to work properly](https://github.com/launchbadge/sqlx/discussions/2051).

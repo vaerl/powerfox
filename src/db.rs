@@ -280,14 +280,4 @@ impl Db {
             .await?;
         Ok(config)
     }
-
-    pub async fn save_config(&self, config: Config) -> Result<Config> {
-        let config = sqlx::query_as!(Config, 
-            "INSERT INTO config (id, cost_heating, cost_general, monthly_budget_heating, monthly_budget_general) VALUES ($1, $2, $3, $4, $5) RETURNING id, cost_heating, cost_general, monthly_budget_heating, monthly_budget_general", config.id, config.cost_heating, config.cost_general, config.monthly_budget_heating, config.monthly_budget_general)
-            .fetch_one(&self.pool)
-            .await?;
-        Ok(config)
-    }
-
-
 }

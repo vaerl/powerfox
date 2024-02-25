@@ -1,0 +1,1 @@
+INSERT INTO public.config (id, cost_heating, cost_general, monthly_budget_heating, monthly_budget_general) VALUES ('3b4eeddd-0c35-41ca-aeb0-0ecb2f7e0deb', 0.23, 0.3, 460, 50);
