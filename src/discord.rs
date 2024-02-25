@@ -70,7 +70,7 @@ async fn yesterday(ctx: Context<'_>) -> Result<(), Error> {
 async fn today(ctx: Context<'_>) -> Result<(), Error> {
     let config = ctx.data().db.get_config().await?;
     let meteo = Meteo::new()?;
-    let temperature = meteo.get_temperature_for_yesterday().await?;
+    let temperature = meteo.get_temperature_for_today().await?;
 
     let powerfox = Powerfox::new()?;
     let devices = powerfox.get_devices().await?;
