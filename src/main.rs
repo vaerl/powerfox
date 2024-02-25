@@ -52,13 +52,6 @@ async fn main() -> Result<()> {
     // TODO check if we can use &Db
     start_bot(&token, intents, cloned_db).await?;
 
-    // TODO include general costs
-    // TODO what now?
-    // -> analyze data (use history from git-repo or whatever): send warnings depending on consumption, price and temperature
-    // => recognize trends, f.e. if consumption starts getting higher; temperature is higher than $THRESHOLD, but there still was significant consumption (f.e. more than 20kWh)
-    // -> make variables configurable by Discord-commands or mail -> thresholds, costs, etc.
-    // do some of the above daily (cost compared to yesterday, a week before) and monthly (broader trends, etc.)
-    // TODO host this publicly on gitlab or github to get dependabot-PRs
     Ok(())
 }
 
