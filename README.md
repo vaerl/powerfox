@@ -2,23 +2,14 @@
 
 Server and `systemd`-service/trigger to automatically read your power-consumption and calculate costs.
 
+## Database-Access
+
+`sqlx` requires a super-user [to work properly](https://github.com/launchbadge/sqlx/discussions/2051).
+It also needs the environment-variable `DATABASE_URL` to work.
+
 ## Triggering summaries
 
-Summaries are triggered by a request to the according endpoint - right now, these summaries are supported:
-
-```http
-# daily summary
-GET http://gojo:3000/powerfox/daily
-```
-
-This request is done by a `systemd`-[service](scripts/powerfox-daily.service) which gets triggered by a [timer](scripts/powerfox-daily.timer).
-Follow these steps to add a new timer-service-combo:
-
-1. create both timer and service
-2. symlink timer and service to `/etc/systemd/system`
-3. `start` and `enable` the timer.
-
-Commands for these steps can be found [here](scripts/systemd.sh).
+Summaries are now triggered using [`tokio-cron-scheduler`](https://crates.io/crates/tokio-cron-scheduler).
 
 ## Networking
 
