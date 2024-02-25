@@ -2,7 +2,7 @@ use std::env;
 
 use anyhow::{anyhow, Result};
 use chrono::serde::ts_seconds::deserialize as from_ts;
-use chrono::{Datelike, Duration, Local, NaiveDate, Utc};
+use chrono::{Datelike, Duration, Local, Utc};
 use reqwest::{Client, StatusCode};
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
@@ -88,32 +88,6 @@ impl Powerfox {
             .basic_auth(&self.username, Some(&self.password))
             .send()
             .await?;
-        if response.status() != StatusCode::OK {
-            Err(anyhow!(
-                "Status-Code of response was not OK: {}",
-                response.text().await?
-            ))
-        } else {
-            Ok(response.json().await?)
-        }
-    }
-
-    /// Get the values of the specified device for the specified day (00:00  to 23:59).
-    pub async fn get_report_for_day(&self, device_id: &String, date: NaiveDate) -> Result<Report> {
-        let response = self
-            .client
-            .get(format!(
-                "{}/api/2.0/my/{}/report?year={}&month={}&day={}",
-                &self.base_url,
-                device_id,
-                date.year(),
-                date.month(),
-                date.day()
-            ))
-            .basic_auth(&self.username, Some(&self.password))
-            .send()
-            .await?;
-
         if response.status() != StatusCode::OK {
             Err(anyhow!(
                 "Status-Code of response was not OK: {}",
