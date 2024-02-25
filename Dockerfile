@@ -21,7 +21,5 @@ COPY --from=builder /usr/src/powerfox/target/release/powerfox /usr/local/bin/pow
 # make certificates work
 RUN apt-get update && apt-get install -y ca-certificates && update-ca-certificates
 
-EXPOSE 3000
-
 # Set the entrypoint command for the container
 CMD ["powerfox"]
