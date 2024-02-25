@@ -247,12 +247,26 @@ impl Db {
     ))
     }
 
+    /// Get all days of the current month.
     pub async fn get_days_of_month(&self) -> Result<Days> {
         let current_date = Local::now().naive_local();
         let first_of_month = NaiveDate::from_ymd_opt(current_date.year(), current_date.month(), 1)
             .ok_or(anyhow!("Could not create date for this month."))?;
 
         let days = sqlx::query_as!(Day, "SELECT * FROM days WHERE date > $1", first_of_month)
+            .fetch_all(&self.pool)
+            .await?;
+
+        Ok(Days(days))
+    }
+
+    /// Get all days of the current year.
+    pub async fn get_days_of_year(&self) -> Result<Days> {
+        let current_date = Local::now().naive_local();
+        let first_of_year = NaiveDate::from_ymd_opt(current_date.year(), 1, 1)
+            .ok_or(anyhow!("Could not create date for this month."))?;
+
+        let days = sqlx::query_as!(Day, "SELECT * FROM days WHERE date > $1", first_of_year)
             .fetch_all(&self.pool)
             .await?;
 

@@ -18,6 +18,7 @@ pub async fn start_bot(token: &str, intents: GatewayIntents, db: Db) -> Result<(
                 yesterday(),
                 today(),
                 month(),
+                year(),
                 budgets(),
                 costs(),
                 help(),
@@ -141,6 +142,22 @@ async fn costs(ctx: Context<'_>) -> Result<(), Error> {
 async fn month(ctx: Context<'_>) -> Result<(), Error> {
     let config = ctx.data().db.get_config().await?;
     let days = ctx.data().db.get_days_of_month().await?;
+    ctx.say(format!(
+        "Cost of Heating: {:.2}€/{}€\nGeneral cost: {:.2}€/{}€",
+        days.heating_cost(&config.cost_heating)?,
+        config.monthly_budget_heating,
+        days.general_cost(&config.cost_general)?,
+        config.monthly_budget_general
+    ))
+    .await?;
+    Ok(())
+}
+
+/// Display this year's costs.
+#[poise::command(slash_command, prefix_command)]
+async fn year(ctx: Context<'_>) -> Result<(), Error> {
+    let config = ctx.data().db.get_config().await?;
+    let days = ctx.data().db.get_days_of_year().await?;
     ctx.say(format!(
         "Cost of Heating: {:.2}€/{}€\nGeneral cost: {:.2}€/{}€",
         days.heating_cost(&config.cost_heating)?,
