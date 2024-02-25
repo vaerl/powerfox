@@ -36,7 +36,7 @@ async fn main() -> Result<()> {
 
     // schedule daily job
     sched
-        .add(Job::new_async("0 12 * * * *", move |_uuid, mut _l| {
+        .add(Job::new_async("* 0 12 * * * *", move |_uuid, mut _l| {
             let db = db.clone();
             Box::pin(async move {
                 let token = env::var("DISCORD_TOKEN").expect("Could not find DISCORD_TOKEN");
