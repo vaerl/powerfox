@@ -69,6 +69,9 @@ async fn version(ctx: Context<'_>) -> Result<(), Error> {
 /// Display yesterday's heating-info.
 #[poise::command(slash_command, prefix_command)]
 async fn yesterday(ctx: Context<'_>) -> Result<(), Error> {
+    // see today() for why we'd better send an initial message here
+    ctx.say("Computing data for yesterday.").await?;
+
     let yesterday = ctx.data().db.create_yesterday().await?;
     let config = ctx.data().db.get_config().await?;
     ctx.say(format!("{}", yesterday.summary(&config.cost_heating)))
@@ -146,32 +149,50 @@ async fn costs(ctx: Context<'_>) -> Result<(), Error> {
 /// Display this month's costs.
 #[poise::command(slash_command, prefix_command)]
 async fn month(ctx: Context<'_>) -> Result<(), Error> {
+    // see today() for why we'd better send an initial message here
+    ctx.say("Computing data for the current month.").await?;
+
     let config = ctx.data().db.get_config().await?;
     let days = ctx.data().db.get_days_of_month().await?;
-    ctx.say(format!(
-        "Cost of Heating: {:.2}€/{}€\nGeneral cost: {:.2}€/{}€",
-        days.heating_cost(&config.cost_heating)?,
-        config.monthly_budget_heating,
-        days.general_cost(&config.cost_general)?,
-        config.monthly_budget_general
-    ))
-    .await?;
+
+    if days.is_empty() {
+        ctx.say("No data for the current month.").await?;
+    } else {
+        ctx.say(format!(
+            "Cost of Heating: {:.2}€/{}€\nGeneral cost: {:.2}€/{}€",
+            days.heating_cost(&config.cost_heating)?,
+            config.monthly_budget_heating,
+            days.general_cost(&config.cost_general)?,
+            config.monthly_budget_general
+        ))
+        .await?;
+    }
+
     Ok(())
 }
 
 /// Display this year's costs.
 #[poise::command(slash_command, prefix_command)]
 async fn year(ctx: Context<'_>) -> Result<(), Error> {
+    // see today() for why we'd better send an initial message here
+    ctx.say("Computing data for the current year.").await?;
+
     let config = ctx.data().db.get_config().await?;
     let days = ctx.data().db.get_days_of_year().await?;
-    ctx.say(format!(
-        "Cost of Heating: {:.2}€/{}€\nGeneral cost: {:.2}€/{}€",
-        days.heating_cost(&config.cost_heating)?,
-        config.monthly_budget_heating,
-        days.general_cost(&config.cost_general)?,
-        config.monthly_budget_general
-    ))
-    .await?;
+
+    if days.is_empty() {
+        ctx.say("No data for the current year.").await?;
+    } else {
+        ctx.say(format!(
+            "Cost of Heating: {:.2}€/{}€\nGeneral cost: {:.2}€/{}€",
+            days.heating_cost(&config.cost_heating)?,
+            config.monthly_budget_heating * 12.0,
+            days.general_cost(&config.cost_general)?,
+            config.monthly_budget_general * 12.0
+        ))
+        .await?;
+    }
+
     Ok(())
 }
 

@@ -94,6 +94,10 @@ impl Day {
 }
 
 impl Days {
+    pub fn is_empty(&self) -> bool {
+        self.0.is_empty()
+    }
+
     pub fn summary(&self, config: &Config) -> Result<String> {
         match self.heating_cost(&config.cost_heating) {
             Ok(total_heating_cost) => {
