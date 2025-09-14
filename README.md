@@ -1,6 +1,6 @@
 # powerfox
 
-Server and `systemd`-service/trigger to automatically read your power-consumption and calculate costs.
+Server and `systemd`-service/trigger to automatically read your power-consumption, calculate costs and inform via Discord.
 
 ## Setup
 
